@@ -1,7 +1,26 @@
 # Ignoring files according to http://microchip.wikidot.com/faq:72
-/MYPROJECT.X/build/
-/MYPROJECT.X/dist/
+*/**/*.X/build/
+*/**/*.X/dist/
 #Ingoring private Makefiles, to create them open the MPLAB IDE or use the C:\Program Files (x86)\Microchip\MPLABX\<VERSION>\mplab_ide\bin\prjMakefilesGenerator.bat script
-/MYPROJECT.X/nbproject/Makefile-*
-/MYPROJECT.X/nbproject/Package-*
-/MYPROJECT.X/nbproject/private/
+*/**/*.X/nbproject/Makefile-*
+*/**/*.X/nbproject/Package-*
+*/**/*.X/nbproject/private/
+
+#Build Directories
+*/**/[Dd]ebug/
+*/**/[Rr]elease/
+
+#Build Results
+*/**/*.o
+*/**/*.d
+*/**/*.eep
+*/**/*.elf
+*/**/*.hex
+*/**/*.map
+*/**/*.srec
+
+#User Specific Files
+*/**/*.atsuo
+
+# Visual Studio 2015/2017 cache/options directory
+*/**/.vs/
