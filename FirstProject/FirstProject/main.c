@@ -37,13 +37,29 @@ int main(void)
 	
 	//Ensures it is 0x14
 	PORTB ^= (1 << PB6) | (1 << PB7);
-	//Sets it to 0x15 since the logical OR will return 1 since either side do not give 0. This would not be a common thing to do, would most like by an error after teacher.
+	//Sets it to 0x15 since the logical OR will return 1 given both of the sides do not give 0. This would not be a common thing to do, would most like by an error after teacher.
 	PORTB |= (1 << PB6) || (1 << PB7);
 
+	// Pointers
+	uint8_t number1_8bit = 0x0A;
+	uint8_t number2_8bit = 0x14;
+	
+	uint16_t number1_16Bit = 0x0064;
+	uint16_t number2_16Bit = 0x00C8;
+	
+	uint8_t *p8bit;
+	uint16_t *p16bit;
+	
+	p8bit = &number1_8bit;
+    p16bit = &number1_16Bit;
+	
+	// Moves the pointer to the next address, 8 bits for the 8 bit pointer and 16 bits for the 16 bits pointer.
+	p8bit++;
+	p16bit++;
 
-    //while (1) 
-    //{
-						//
-    //}
+	// Moves the pointer with 4 times its bit.
+	p8bit += 4;
+	p16bit += 4;
+
 }
 
