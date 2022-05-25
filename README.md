@@ -16,6 +16,7 @@ These projects are not written using the Arduino IDE, but rather C through the M
 
 This repo contains multiple projects, there are: 
  - FirstProject, a basic project for introduction into the IDE and Embedded.
+ - ATMega2560Bootloader, the bootloader that is needed for Arduino Uno to work. Do note that it does contain some program code that is not needed. 
 
 ---
 
