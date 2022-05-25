@@ -15,7 +15,7 @@
 */**/*.d
 */**/*.eep
 */**/*.elf
-*/**/*.hex
+# */**/*.hex # Bootloader file is using hex
 */**/*.map
 */**/*.srec
 
