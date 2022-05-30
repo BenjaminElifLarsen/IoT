@@ -15,12 +15,48 @@ void setup() {
   currentState = Receive_Address;
 }
 
-void Read(){
-  //test code
-  char bufferArray[] = {'0','x','6','4'};
-  unsigned long value; 
-  value = strtoul(bufferArray, NULL,16);
-  Serial.print(value);
+unsigned long Read(int readLength){
+  while(Serial.available() < readLength+2){}
+
+  char bufferArray[readLength]; //= {'0','x','7','B','b'};
+
+  bool hasStarted = false;
+  bool hasEnded = false;
+  bool hasError = false;
+  int pos = 0;
+  int dataSize = Serial.available();
+  
+  for(int i = 0; i < readLength+2; i++){
+    char value = Serial.read();
+    if(0 == i){
+      if(START_CHAR == value){
+        hasStarted = true;
+      }
+      else{
+        hasError = true;
+        break;
+      }
+    }
+    else if(END_CHAR == value){
+      hasEnded = true;
+    }
+    else if(hasStarted && !hasEnded && !hasError){
+      bufferArray[pos] = value;
+      pos++;
+    }   
+  }
+  
+  do{
+    (void)Serial.read();
+  }while(Serial.available());
+  
+  if(!hasError && hasStarted && hasEnded){
+    unsigned long readValue; 
+    readValue = strtoul(bufferArray, NULL,16);
+    Serial.println(readValue);
+    return readValue;
+  }
+  return 4294967295;
 }
 
 void ReceiveAddress(){
@@ -51,7 +87,7 @@ void ReceiveBitValue(){
 }
 
 void loop() {
-  Read();
+  Read(3);
   if(Receive_Address == currentState){ 
     ReceiveAddress();
   }
