@@ -18,6 +18,14 @@ void setup() {
   currentState = Receive_Address;
 }
 
+const char* getStateName(enum states state){
+  switch(state) {
+    case Receive_Address: return "Receive_Address";
+    case Receive_Bit_Position_In_Address: return "Receive_Bit_Position_In_Address";
+    case Receive_Bit_Position_Value: return "Receive_Bit_Position_Value";
+  }
+}
+
 unsigned long Read(int readLength) {
   while (Serial.available() < readLength + 2) {}
 
@@ -74,7 +82,7 @@ void ReceiveAddress() {
   if (true == validValue) {
     address = value;
     currentState = Receive_Bit_Position_In_Address;
-    Serial.println(currentState);
+    Serial.println(getStateName(currentState));
   }
 }
 
@@ -86,7 +94,7 @@ void ReceiveBitPosition() {
   if (true == validValue) {
     bitPosition = value;
     currentState = Receive_Bit_Position_Value;
-    Serial.println(currentState);
+    Serial.println(getStateName(currentState));
 
   }
 }
@@ -101,29 +109,27 @@ void ReceiveBitValue() {
   }
   if (true == validValue) {
 
-    uint8_t *port = &address;
-    uint8_t *ddr = &address; // After datasheet, ddr address is one below the port address.
-    ddr--;
+    uint8_t *port = reinterpret_cast<uint8_t*>(address);
+    //uint8_t *ddr = &address; // After datasheet, ddr address is one below the port address.
+    //ddr--;
 
-    Serial.println((uint8_t)*ddr,HEX);
-    Serial.println((uint8_t)*port,HEX);
-    Serial.println((uint8_t)&ddr,HEX);
-    Serial.println((uint8_t)&port,HEX);
+    //Serial.println((uint8_t)*ddr,HEX);
+    Serial.println(*port,BIN);
     if (1 == value)
     {
-      *ddr |= (1 << bitPosition);
+      //*ddr |= (1 << bitPosition);
       *port |= (1 << bitPosition);
     }
     else {
       *port = *port & ~(1 << bitPosition);
-      *ddr = *ddr & ~(1 << bitPosition);
+      //*ddr = *ddr & ~(1 << bitPosition);
     }
 
-    Serial.println((uint8_t)*ddr,HEX);
-    Serial.println((uint8_t)*port,HEX);
+    //Serial.println((uint8_t)*ddr,HEX);
+    Serial.println((uint8_t)*port,BIN);
     
     currentState = Receive_Address;
-    Serial.println(currentState);
+    Serial.println(getStateName(currentState));
   }
 }
 
