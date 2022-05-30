@@ -1,3 +1,17 @@
+
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+
 enum states {
   Receive_Address,
   Receive_Bit_Position_In_Address,
@@ -14,12 +28,32 @@ uint8_t bitPosition;
 
 void setup() {
   //to do, set up screen
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;); // Don't proceed, loop forever
+  }
+  display.display();
+  delay(2000); // Pause for 2 seconds
+
+  // Clear the buffer
+  display.clearDisplay();
+  display.display();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+
   Serial.begin(9600);
   currentState = Receive_Address;
 }
 
-const char* getStateName(enum states state){
-  switch(state) {
+void WriteDisplay(String message, int y) {
+  display.setCursor(0, y);
+  display.println(message);
+  Serial.println(message);
+  display.display();
+}
+
+const char* getStateName(enum states state) {
+  switch (state) {
     case Receive_Address: return "Receive_Address";
     case Receive_Bit_Position_In_Address: return "Receive_Bit_Position_In_Address";
     case Receive_Bit_Position_Value: return "Receive_Bit_Position_Value";
@@ -82,24 +116,28 @@ void ReceiveAddress() {
   if (true == validValue) {
     address = value;
     currentState = Receive_Bit_Position_In_Address;
+    display.clearDisplay();
+    display.display();
+    WriteDisplay("A:" + String(address, HEX), 0);
     Serial.println(getStateName(currentState));
   }
 }
 
 void ReceiveBitPosition() {
   unsigned long value = Read(3);
-  
-  bool validValue = false; 
-  if(value <= 7){
-  validValue = true;
+
+  bool validValue = false;
+  if (value <= 7) {
+    validValue = true;
   }
   if (true == validValue) {
     bitPosition = value;
     currentState = Receive_Bit_Position_Value;
+    WriteDisplay("P:" + String(bitPosition, HEX), 8);
     Serial.println(getStateName(currentState));
 
   }
-  
+
 }
 
 void ReceiveBitValue() {
@@ -109,6 +147,7 @@ void ReceiveBitValue() {
   bool validValue = false;
   if (0 == value || 1 == value) {
     validValue = true;
+    WriteDisplay("B:" + String(value, HEX), 16);
   }
   if (true == validValue) {
 
@@ -117,7 +156,7 @@ void ReceiveBitValue() {
     //ddr--;
 
     //Serial.println((uint8_t)*ddr,HEX);
-    Serial.println(*port,BIN);
+    Serial.println(*port, BIN);
     if (1 == value)
     {
       //*ddr |= (1 << bitPosition);
@@ -129,10 +168,11 @@ void ReceiveBitValue() {
     }
 
     //Serial.println((uint8_t)*ddr,HEX);
-    Serial.println((uint8_t)*port,BIN);
-    
+    Serial.println((uint8_t)*port, BIN);
+
     currentState = Receive_Address;
     Serial.println(getStateName(currentState));
+    WriteDisplay("BIN:" + String((uint8_t)*port, BIN), 24);
   }
 }
 
