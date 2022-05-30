@@ -87,16 +87,19 @@ void ReceiveAddress() {
 }
 
 void ReceiveBitPosition() {
-  unsigned long value = Read(4);
-  //do something
-
-  bool validValue = true;
+  unsigned long value = Read(3);
+  
+  bool validValue = false; 
+  if(value <= 7){
+  validValue = true;
+  }
   if (true == validValue) {
     bitPosition = value;
     currentState = Receive_Bit_Position_Value;
     Serial.println(getStateName(currentState));
 
   }
+  
 }
 
 void ReceiveBitValue() {
