@@ -11,6 +11,9 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+extern "C"{
+  void RS232Init();
+}
 
 enum states {
   Receive_Address,
@@ -40,7 +43,9 @@ void setup() {
   display.display();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-
+  
+  RS232Init();
+  
   Serial.begin(9600);
   currentState = Receive_Address;
 }
