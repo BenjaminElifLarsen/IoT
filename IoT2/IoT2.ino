@@ -4,10 +4,10 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 32 
+#define OLED_RESET     4 
+#define SCREEN_ADDRESS 0x3C 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -69,6 +69,7 @@ unsigned long Read(int readLength) {
    * When its encounter the '<' it starts storing the values until it reads the '>'.
    * Then read all values after until there is none left. 
    * When this is done the program can process the array.
+   * Got problems with getting FDEV_SETUP_STREAM to work 'sorry, unimplemented: non-trivial designated initializers not supported'
    */
   
   char bufferArray[readLength]; 
@@ -99,7 +100,7 @@ unsigned long Read(int readLength) {
       bufferArray[pos] = value;
       pos++;
     }
-    else if (i > 2 && isHexadecimalDigit(value) && hasStarted && !hasEnded && !hasError) {
+    else if (i > 2 && isxdigit(value) != 0 && hasStarted && !hasEnded && !hasError) {
       bufferArray[pos] = value;
       pos++;
     }
