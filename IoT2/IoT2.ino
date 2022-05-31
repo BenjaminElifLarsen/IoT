@@ -5,14 +5,15 @@
 #include <Adafruit_SSD1306.h>
 
 #define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 32 
-#define OLED_RESET     4 
-#define SCREEN_ADDRESS 0x3C 
+#define SCREEN_HEIGHT 32
+#define OLED_RESET     4
+#define SCREEN_ADDRESS 0x3C
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-extern "C"{
+extern "C" {
   void RS232Init();
+  char Read();
 }
 
 enum states {
@@ -43,9 +44,9 @@ void setup() {
   display.display();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  
+
   RS232Init();
-  
+
   Serial.begin(9600);
   currentState = Receive_Address;
 }
@@ -66,24 +67,28 @@ const char* getStateName(enum states state) {
 }
 
 unsigned long Read(int readLength) {
-  while (Serial.available() < readLength + 2) {} 
+  while (Serial.available() < readLength + 2) {
+    //test code,
+    //char test = Read();
+    //Serial.println(test);
+  }
   /*
-   * If switching from Serial to UART considerations:
-   * Perhaps have no reason to have something like the line of code about,
-   * instead the program could just read from the UART and discard all data before '<'. 
-   * When its encounter the '<' it starts storing the values until it reads the '>'.
-   * Then read all values after until there is none left. 
-   * When this is done the program can process the array.
-   * Got problems with getting FDEV_SETUP_STREAM to work 'sorry, unimplemented: non-trivial designated initializers not supported'
-   */
-  
-  char bufferArray[readLength]; 
+     If switching from Serial to UART considerations:
+     Perhaps have no reason to have something like the line of code about,
+     instead the program could just read from the UART and discard all data before '<'.
+     When its encounter the '<' it starts storing the values until it reads the '>'.
+     Then read all values after until there is none left.
+     When this is done the program can process the array.
+     Got problems with getting FDEV_SETUP_STREAM to work 'sorry, unimplemented: non-trivial designated initializers not supported'
+  */
+
+  char bufferArray[readLength];
 
   bool hasStarted = false;
   bool hasEnded = false;
   bool hasError = false;
   int pos = 0;
-  for (int i = 0; i < readLength + 2; i++) { 
+  for (int i = 0; i < readLength + 2; i++) {
     char value = Serial.read();
     if (0 == i) {
       if (START_CHAR == value) {
@@ -97,11 +102,11 @@ unsigned long Read(int readLength) {
     else if (END_CHAR == value) {
       hasEnded = true;
     }
-    else if(1 == i && '0' == value){
+    else if (1 == i && '0' == value) {
       bufferArray[pos] = value;
       pos++;
     }
-    else if(2 == i && (value == 'x' || value == 'X') ){
+    else if (2 == i && (value == 'x' || value == 'X') ) {
       bufferArray[pos] = value;
       pos++;
     }
@@ -132,9 +137,9 @@ unsigned long Read(int readLength) {
 
 void ReceiveAddress() {
   unsigned long value = Read(4);
-  
+
   bool validValue = false;
-  if(value <= 255){
+  if (value <= 255) {
     validValue = true;
   }
   if (true == validValue) {
@@ -201,15 +206,15 @@ void ReceiveBitValue() {
 }
 
 void loop() {
-  switch(currentState){
+  switch (currentState) {
     case Receive_Address:
       ReceiveAddress();
       break;
     case Receive_Bit_Position_In_Address:
       ReceiveBitPosition();
       break;
-    case Receive_Bit_Position_Value: 
-      ReceiveBitValue(); 
+    case Receive_Bit_Position_Value:
+      ReceiveBitValue();
       break;
   }
 }

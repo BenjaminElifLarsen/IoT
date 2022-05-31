@@ -1,5 +1,6 @@
-
+; ATMega 2560
 .global RS232Init
+.global Read
 
 RS232Init:
   push r16
@@ -15,3 +16,9 @@ RS232Init:
   sts 0xC2, r16 ; UCSR0C
   pop r16
   ret 
+
+
+Read:
+  ;push r24
+  lds r24, 0xC6 ; UDR0 
+  ret
