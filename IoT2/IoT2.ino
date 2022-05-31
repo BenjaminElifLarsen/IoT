@@ -196,13 +196,15 @@ void ReceiveBitValue() {
 }
 
 void loop() {
-  if (Receive_Address == currentState) {
-    ReceiveAddress();
-  }
-  else if (Receive_Bit_Position_In_Address == currentState) {
-    ReceiveBitPosition();
-  }
-  else if (Receive_Bit_Position_Value == currentState) {
-    ReceiveBitValue();
+  switch(currentState){
+    case Receive_Address:
+      ReceiveAddress();
+      break;
+    case Receive_Bit_Position_In_Address:
+      ReceiveBitPosition();
+      break;
+    case Receive_Bit_Position_Value: 
+      ReceiveBitValue(); 
+      break;
   }
 }
