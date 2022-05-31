@@ -61,9 +61,17 @@ const char* getStateName(enum states state) {
 }
 
 unsigned long Read(int readLength) {
-  while (Serial.available() < readLength + 2) {}
-
-  char bufferArray[readLength]; //= {'0','x','7','B','b'};
+  while (Serial.available() < readLength + 2) {} 
+  /*
+   * If switching from Serial to UART considerations:
+   * Perhaps have no reason to have something like the line of code about,
+   * instead the program could just read from the UART and discard all data before '<'. 
+   * When its encounter the '<' it starts storing the values until it reads the '>'.
+   * Then read all values after until there is none left. 
+   * When this is done the program can process the array.
+   */
+  
+  char bufferArray[readLength]; 
 
   bool hasStarted = false;
   bool hasEnded = false;
