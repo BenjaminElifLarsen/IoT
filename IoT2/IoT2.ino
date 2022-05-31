@@ -152,22 +152,22 @@ void ReceiveBitValue() {
   if (true == validValue) {
 
     uint8_t *port = reinterpret_cast<uint8_t*>(address);
-    //uint8_t *ddr = &address; // After datasheet, ddr address is one below the port address.
-    //ddr--;
+    uint8_t *ddr = reinterpret_cast<uint8_t*>(address); // After datasheet, ddr address is one below the port address.
+    ddr--;
 
-    //Serial.println((uint8_t)*ddr,HEX);
+    Serial.println(*ddr, BIN);
     Serial.println(*port, BIN);
     if (1 == value)
     {
-      //*ddr |= (1 << bitPosition);
+      *ddr |= (1 << bitPosition);
       *port |= (1 << bitPosition);
     }
     else {
       *port = *port & ~(1 << bitPosition);
-      //*ddr = *ddr & ~(1 << bitPosition);
+      *ddr = *ddr & ~(1 << bitPosition);
     }
 
-    //Serial.println((uint8_t)*ddr,HEX);
+    Serial.println(*ddr, BIN);
     Serial.println((uint8_t)*port, BIN);
 
     currentState = Receive_Address;
