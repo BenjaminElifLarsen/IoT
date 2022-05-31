@@ -69,7 +69,7 @@ unsigned long Read(int readLength) {
   bool hasEnded = false;
   bool hasError = false;
   int pos = 0;
-  for (int i = 0; i < readLength + 2; i++) { //should check if the second value is 0 and third is x/X
+  for (int i = 0; i < readLength + 2; i++) { 
     char value = Serial.read();
     if (0 == i) {
       if (START_CHAR == value) {
@@ -83,7 +83,15 @@ unsigned long Read(int readLength) {
     else if (END_CHAR == value) {
       hasEnded = true;
     }
-    else if ((value == 'x' || value == 'X' || isHexadecimalDigit(value)) && hasStarted && !hasEnded && !hasError) {
+    else if(1 == i && '0' == value){
+      bufferArray[pos] = value;
+      pos++;
+    }
+    else if(2 == i && (value == 'x' || value == 'X') ){
+      bufferArray[pos] = value;
+      pos++;
+    }
+    else if (i > 2 && isHexadecimalDigit(value) && hasStarted && !hasEnded && !hasError) {
       bufferArray[pos] = value;
       pos++;
     }
@@ -110,9 +118,11 @@ unsigned long Read(int readLength) {
 
 void ReceiveAddress() {
   unsigned long value = Read(4);
-  //do something
-
-  bool validValue = true;
+  
+  bool validValue = false;
+  if(value <= 255){
+    validValue = true;
+  }
   if (true == validValue) {
     address = value;
     currentState = Receive_Bit_Position_In_Address;
