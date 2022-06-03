@@ -7,22 +7,13 @@
 
 #include <avr/io.h>
 
-void bit0(uint8_t *port){
-	*port ^= (1 << 0);	
+void bitFlip(uint8_t *port, uint8_t bit){
+	*port ^= (1 << bit);	
 }
 
-void bit1(uint8_t *port){
-	*port ^= (1 << 1);	
-}
-
-void bit2(uint8_t *port){
-	*port ^= (1 << 2);	
-}
 
 int main(void) //Using JTAG
 {
-    /* Replace with your application code */
-	
 	uint8_t *ddr = 0x24;
 	*ddr |= (1 << 2);
 	*ddr |= (1 << 1);
@@ -30,22 +21,13 @@ int main(void) //Using JTAG
 	
 	uint8_t pos = 0;
 	
-	uint8_t *port = 0x25;
-	
+	uint8_t *port = 0x25;	
 	*port |= (1 << 2);
 	*port |= (1 << 1);
 	*port |= (1 << 0);
-    while (1) 
+    while (1) // Reason for no delay is that it is only meant to be run through debugging using JTAG.
     {
-		if(2 == pos){
-			bit2(port);
-		}
-		else if(1 == pos){
-			bit1(port);
-		}
-		else if(0 == pos){
-			bit0(port);
-		}
+		bitFlip(port,pos);
 		pos = (++pos) % 3; 
     }
 }
