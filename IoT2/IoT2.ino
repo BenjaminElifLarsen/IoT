@@ -67,6 +67,11 @@ const char* getStateName(enum states state) {
 }
 
 unsigned long Read(int readLength) {
+  
+  while(true){
+    char test = Read();
+    Serial.println(test);
+  }
   while (Serial.available() < readLength + 2) {
     //test code,
     //char test = Read();
