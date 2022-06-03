@@ -9,7 +9,7 @@
 
 void bitFlip(uint8_t *port, uint8_t bit){
 	uint8_t *ddr = port;	
-	*ddr--;
+	ddr--;
 	*ddr ^= (1 << bit);
 	*port ^= (1 << bit);	
 }
