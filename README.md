@@ -1,14 +1,14 @@
 
 # IoT
 
-Projects created using Microchip Studio.
+Projects created mainly using Microchip Studio.
 
 ---
 
 ## Purpose
 
 This repo contains projects used for learning and praticing embedded programming. 
-These projects are not written using the Arduino IDE, but rather C through the Microchip Studio IDE.
+These projects are mainly not written using the Arduino IDE, but rather C through the Microchip Studio IDE.
 
 ---
 
