@@ -44,6 +44,7 @@ void ChangeAddrssState(void)
 	AddressState = (AddressStates)stateInt;
 	WorkingAddresStruct.Address_StringPointer = 0;
 	PrintOut = true;
+	EndOfStateMachine = true;
 }
 
 void ReceivedCharAsAddressChar(char* ch)
@@ -61,7 +62,7 @@ void ReceivedCharAsAddressChar(char* ch)
 
 void ReceivedCharAsPositionChar(char* ch) 
 {
-	if (!((*ch >= '0') && (*ch <= '7')))
+	if ((*ch < '0') || (*ch > '7'))
 	{
 		RestartStates();
 	}
@@ -153,6 +154,7 @@ void TimerStateRun() {
 
 	printf("\nWIP");
 	OuterState = OUTER_STATE_IDLE;
+
 	if (true == EndOfStateMachine) {
 		EndOfStateMachine = false;
 		return; 
@@ -188,22 +190,22 @@ void setup() {
 	OuterState = OUTER_STATE_IDLE;
 	WorkingAddresStruct.Address_StringPointer = 0;
 	WorkingAddresStruct.Address_String[StringCharMaxAmount] = "\0";
-	printf("\nStartingUp\n");
+	printf("\nStarting Up\n.\n..\n...\nStarted up\n");
 }
 
 void loop() {
 	switch (OuterState)
 	{
-	case OUTER_STATE_IDLE:
-		OuterStateHandling();
-		break;
+		case OUTER_STATE_IDLE:
+			OuterStateHandling();
+			break;
 
-	case OUTER_STATE_ADDRESS: 
-		AddressStateRun();
-		break;
+		case OUTER_STATE_ADDRESS: 
+			AddressStateRun();
+			break;
 
-	case OUTER_STATE_TIMER:
-		TimerStateRun();
-		break;
+		case OUTER_STATE_TIMER:
+			TimerStateRun();
+			break;
 	}
 }
