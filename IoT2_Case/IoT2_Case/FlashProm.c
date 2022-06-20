@@ -5,7 +5,7 @@
 #include "FlashProm.h"
 #include "ProjectDefinitions.h"
 
-const char AddressStateReceivingAddresss[] PROGMEM = "\nEnter Address in Hex (max 4 sign): 0x";
+const char AddressStateReceivingAddresss[] PROGMEM = "\nEnter port address (not DDR address) in Hex (max 4 sign): 0x";
 const char AddressStateReceivingBitPosition[] PROGMEM = "\nEnter bit position (0 - 7): ";
 const char AddressStateReceivingBitValue[] PROGMEM = "\nEnter bit value (0 - 1):";
 const char AddressStateUnknown[] PROGMEM = "\nUnknown address state";

@@ -19,6 +19,8 @@ extern const char OuterStateAddrss[] PROGMEM;
 extern const char OuterStateTimer[] PROGMEM;
 extern const char OuterStateUnknown[] PROGMEM;
 
+extern const char TimerStateUnknown[] PROGMEM;
+
 extern uint16_t strlen_FlashProm(const char* FlashProm_Address);
 extern uint16_t strlen_EE_Prom(const char* FlashProm_Address);
 extern void strcpy_FlahProm(char* RAM_Malloc_Pointer, const char* FlashProm_Address);

@@ -17,5 +17,35 @@
   <ItemGroup>
     <None Include="IoT2_Case.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.IoT2_Case.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="app_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avr_debugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avr8-stub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashProm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="app_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avr8-stub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlashProm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
