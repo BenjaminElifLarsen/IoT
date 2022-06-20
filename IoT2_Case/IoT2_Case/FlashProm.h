@@ -3,6 +3,10 @@
 #ifndef _FLASHPROM_h
 #define _FLASHPROM_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
 #else
@@ -28,7 +32,9 @@ extern void strcpy_EE_Prom(char* RAM_Malloc_Pointer, const char FlashProm_Addres
 extern void memcpy_FlashProm(char* RAM_Malloc_Pointer, const char* FlahProm_Address, uint16_t NumberOfBytes);
 
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

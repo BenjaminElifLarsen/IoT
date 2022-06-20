@@ -67,6 +67,6 @@ void strcpy_EE_Prom(char* RAM_Malloc_Pointer, const char FlashProm_Address)
 
 void memcpy_FlashProm(char* RAM_Malloc_Pointer, const char* FlahProm_Address, uint16_t NumberOfBytes) 
 {
-	memccpy_P(RAM_Malloc_Pointer, FlahProm_Address, NumberOfBytes);
+	memcpy_P(RAM_Malloc_Pointer, FlahProm_Address, NumberOfBytes);
 }
 
